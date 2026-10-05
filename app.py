@@ -69,7 +69,7 @@ if st.session_state.difficulty != difficulty:
     st.session_state.history = []
 
 if "attempts" not in st.session_state:
-    st.session_state.attempts = 1
+    st.session_state.attempts = 0
 
 if "score" not in st.session_state:
     st.session_state.score = 0
@@ -82,10 +82,15 @@ if "history" not in st.session_state:
 
 st.subheader("Make a guess")
 
-st.info(
-    f"Guess a number between {low} and {high}. "
-    f"Attempts left: {attempt_limit - st.session_state.attempts}"
-)
+banner_area = st.empty()
+
+
+def show_banner():
+    banner_area.info(
+        f"Guess a number between {low} and {high}. "
+        f"Attempts left: {attempt_limit - st.session_state.attempts}"
+    )
+
 
 debug_area = st.container()
 
@@ -125,6 +130,7 @@ if st.session_state.status != "playing":
         st.success("You already won. Start a new game to play again.")
     else:
         st.error("Game over. Start a new game to try again.")
+    show_banner()
     show_debug_info()
     st.stop()
 
@@ -168,6 +174,7 @@ if submit:
                     f"Score: {st.session_state.score}"
                 )
 
+show_banner()
 show_debug_info()
 
 st.divider()
